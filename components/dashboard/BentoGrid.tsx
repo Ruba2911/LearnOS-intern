@@ -10,12 +10,11 @@ export default function BentoGrid({
       className="
         mx-auto
         grid
-        max-w-[1500px]
-        min-h-[calc(100vh-7rem)]
-        auto-rows-[minmax(170px,auto)]
+        max-w-[1600px]
+        auto-rows-[minmax(130px,auto)]
         grid-cols-1
-        gap-4
-        sm:gap-5
+        gap-3
+        sm:gap-4
         md:grid-cols-2
         xl:grid-cols-4
       "

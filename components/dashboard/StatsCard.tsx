@@ -29,10 +29,10 @@ export default function StatsCard({
   const Icon = iconMap[title as keyof typeof iconMap] ?? BarChart3;
 
   return (
-    <BentoCard className="group min-h-[170px]">
-      <div className="flex h-full items-center gap-5">
-        <div className={`flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br shadow-2xl ${toneMap[tone]}`}>
-          <Icon className="h-8 w-8" />
+    <BentoCard className="group min-h-[130px] p-5 lg:p-5">
+      <div className="flex h-full items-center gap-4">
+        <div className={`flex h-13 w-13 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br shadow-2xl ${toneMap[tone]}`}>
+          <Icon className="h-7 w-7" />
         </div>
 
         <div className="min-w-0">
@@ -40,11 +40,11 @@ export default function StatsCard({
             {title}
           </p>
 
-          <h2 className="mt-2 text-4xl font-black tracking-tight text-white">
+          <h2 className="mt-1 text-3xl font-black tracking-tight text-white">
             {value}
           </h2>
 
-          <p className="mt-1 text-sm leading-5 text-slate-400">
+          <p className="mt-0.5 text-sm leading-4 text-slate-400">
             {description}
           </p>
         </div>

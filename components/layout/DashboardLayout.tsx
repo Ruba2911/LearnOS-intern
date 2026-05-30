@@ -17,10 +17,10 @@ export default function DashboardLayout({
       <Sidebar />
       <MobileNavbar />
 
-      <div className="relative flex min-w-0 flex-1 flex-col lg:pl-[17rem]">
+      <div className="relative flex min-w-0 flex-1 flex-col lg:pl-[20rem]">
         <Topbar />
 
-        <main className="flex-1 overflow-y-auto px-4 pb-28 pt-5 sm:px-6 lg:px-8 lg:pb-8">
+        <main className="flex-1 overflow-y-auto px-4 pb-24 pt-4 sm:px-6 lg:px-6 lg:pb-6">
           {children}
         </main>
       </div>

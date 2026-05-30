@@ -1,17 +1,11 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import { getActivityHeatmapData } from "@/lib/supabase/queries";
+import { createClient } from "@/lib/supabase/client";
 
 const weeks = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-const intensities = [
-  0, 1, 1, 3, 2, 4, 2,
-  1, 2, 4, 3, 5, 4, 3,
-  0, 3, 4, 5, 4, 5, 2,
-  2, 4, 3, 5, 5, 4, 1,
-  1, 2, 5, 4, 3, 2, 0,
-  0, 3, 4, 5, 3, 1, 2,
-  1, 2, 3, 4, 5, 4, 3,
-];
 
 const cellStyles = [
   "bg-white/[0.045]",
@@ -22,23 +16,62 @@ const cellStyles = [
   "bg-gradient-to-br from-violet-400 to-cyan-300 shadow-[0_0_24px_rgba(34,211,238,0.5)]",
 ];
 
-export default function ActivityHeatmap() {
+interface ActivityHeatmapProps {
+  userId?: any;
+}
+
+export default function ActivityHeatmap({ userId }: ActivityHeatmapProps) {
+  const [intensities, setIntensities] = useState<number[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const supabase = createClient();
+
+  useEffect(() => {
+    const loadHeatmapData = async () => {
+      try {
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
+
+        if (user) {
+          const data = await getActivityHeatmapData(user.id);
+          setIntensities(data);
+        }
+      } catch (err) {
+        console.error("Error loading heatmap data:", err);
+        // Fallback to empty array
+        setIntensities(Array(49).fill(0));
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadHeatmapData();
+  }, [supabase.auth]);
+
+  if (isLoading) {
+    return (
+      <div className="mt-4 flex items-center justify-center h-28">
+        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-violet-500"></div>
+      </div>
+    );
+  }
+
   return (
-    <div className="mt-7">
-      <div className="mb-3 ml-10 grid grid-cols-7 gap-2 text-center text-[11px] font-medium text-slate-500">
+    <div className="mt-4">
+      <div className="mb-2 grid grid-cols-7 gap-2 text-center text-[11px] font-medium text-slate-500">
         {weeks.map((week) => (
           <span key={week}>{week}</span>
         ))}
       </div>
 
-      <div className="flex gap-3">
-        <div className="grid grid-rows-7 gap-2 py-0.5 text-[11px] font-medium text-slate-500">
+      <div className="flex gap-2">
+        <div className="grid grid-rows-7 gap-1 py-0 text-[11px] font-medium text-slate-500">
           {weeks.map((week) => (
-            <span key={week} className="flex h-7 items-center">{week}</span>
+            <span key={week} className="flex h-6 items-center">{week}</span>
           ))}
         </div>
 
-        <div className="grid flex-1 grid-cols-7 gap-2 sm:grid-cols-7">
+        <div className="grid flex-1 grid-cols-7 gap-1 sm:grid-cols-7">
           {intensities.map((intensity, index) => (
             <motion.div
               key={index}
@@ -46,14 +79,14 @@ export default function ActivityHeatmap() {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: index * 0.012, duration: 0.32 }}
               whileHover={{ scale: 1.16, rotate: 2 }}
-              className={`h-7 min-w-0 cursor-pointer rounded-lg border border-white/5 transition ${cellStyles[intensity]}`}
+              className={`h-6 min-w-0 cursor-pointer rounded-lg border border-white/5 transition ${cellStyles[intensity]}`}
               title={`${intensity * 18} minutes focused`}
             />
           ))}
         </div>
       </div>
 
-      <div className="mt-8 flex items-center justify-between gap-4 text-xs text-slate-500">
+      <div className="mt-4 flex items-center justify-between gap-3 text-xs text-slate-500">
         <span>Less</span>
         <div className="flex items-center gap-1.5">
           {cellStyles.map((style, index) => (

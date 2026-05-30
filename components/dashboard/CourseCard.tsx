@@ -47,7 +47,7 @@ export default function CourseCard({
       animate={{ opacity: 1, y: 0 }}
       whileHover={{ y: -5, scale: 1.01 }}
       transition={{ type: "spring", stiffness: 180, damping: 22 }}
-      className="group rounded-[28px] border border-white/10 bg-white/[0.045] p-5 shadow-[0_20px_70px_rgba(0,0,0,0.22)] backdrop-blur-xl transition hover:border-violet-300/25 hover:bg-white/[0.07] hover:shadow-[0_24px_80px_rgba(88,28,135,0.22)]"
+      className="group rounded-[28px] border border-white/10 bg-white/[0.045] p-4 shadow-[0_20px_70px_rgba(0,0,0,0.22)] backdrop-blur-xl transition hover:border-violet-300/25 hover:bg-white/[0.07] hover:shadow-[0_24px_80px_rgba(88,28,135,0.22)]"
     >
 
       <div className="flex items-start justify-between gap-4">
@@ -62,13 +62,13 @@ export default function CourseCard({
 
       </div>
 
-      <h3 className="mt-5 text-lg font-bold leading-tight text-white">
+      <h3 className="mt-3 text-lg font-bold leading-tight text-white">
         {title}
       </h3>
 
-      <div className="mt-5">
+      <div className="mt-3">
 
-        <div className="mb-2 flex justify-between text-xs text-slate-400">
+        <div className="mb-1 flex justify-between text-xs text-slate-400">
           <span>Progress</span>
 
           <motion.span
@@ -85,7 +85,7 @@ export default function CourseCard({
 
       </div>
 
-      <div className="mt-5 flex items-center gap-2 text-sm text-slate-400">
+      <div className="mt-3 flex items-center gap-2 text-sm text-slate-400">
         <Clock className="h-4 w-4" />
 
         {duration}
