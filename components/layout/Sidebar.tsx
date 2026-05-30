@@ -14,8 +14,12 @@ import {
 
 import { motion } from "framer-motion";
 import { useRouter, usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { logout } from "@/lib/supabase/logout";
+import { createClient } from "@/lib/supabase/client";
+import { getProfile } from "@/lib/supabase/queries";
+import type { Profile } from "@/types/supabase";
+
 
 const navItems = [
   { icon: Home, label: "Home", href: "/" },
@@ -29,7 +33,11 @@ const navItems = [
 export default function Sidebar() {
   const router = useRouter();
   const pathname = usePathname();
+  const supabase = useMemo(() => createClient(), []);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+  const [profile, setProfile] = useState<Profile | null>(null);
+  const [profileLoading, setProfileLoading] = useState(true);
+
 
   const getIsActive = (href: string) => {
     if (href === "/") {
@@ -38,7 +46,49 @@ export default function Sidebar() {
     return pathname.startsWith(href);
   };
 
+  useEffect(() => {
+    const loadProfile = async () => {
+      try {
+        setProfileLoading(true);
+        const {
+          data: { user },
+          error: authError,
+        } = await supabase.auth.getUser();
+
+        if (authError || !user) {
+          setProfile(null);
+          return;
+        }
+
+        const userProfile = await getProfile(user.id);
+        setProfile(userProfile);
+      } catch {
+        setProfile(null);
+      } finally {
+        setProfileLoading(false);
+      }
+    };
+
+    loadProfile();
+  }, [supabase.auth]);
+
+  const nameToDisplay = useMemo(() => {
+    const fullName = profile?.full_name?.trim();
+    const username = profile?.username?.trim();
+    const email = profile?.email?.trim();
+
+    return fullName || username || email || "User";
+  }, [profile]);
+
+  const avatarInitials = useMemo(() => {
+    const source = nameToDisplay || "User";
+    const parts = source.split(/\s+/).filter(Boolean);
+    if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+    return (parts[0][0] + parts[1][0]).toUpperCase();
+  }, [nameToDisplay]);
+
   const handleLogout = async () => {
+
     const result = await logout();
     if (result.success) {
       router.push("/auth/login");
@@ -51,10 +101,11 @@ export default function Sidebar() {
       <div className="pointer-events-none absolute -left-14 top-20 h-44 w-44 rounded-full bg-violet-500/15 blur-3xl" />
       {/* Logo */}
       <div className="relative border-b border-white/5 p-5">
-        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3">
           <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-violet-500 via-fuchsia-500 to-cyan-400 text-white shadow-[0_0_28px_rgba(139,92,246,0.55)]">
             <BrainCircuit className="h-5 w-5" />
           </div>
+
 
           <div>
             <h1 className="text-lg font-bold tracking-tight">
@@ -139,18 +190,23 @@ export default function Sidebar() {
           className="w-full glass-card flex items-center gap-3 rounded-2xl p-3 hover:bg-white/[0.065] transition"
         >
           <div className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-violet-500 to-cyan-500 font-semibold text-white">
-            R
+            {profileLoading ? "R" : avatarInitials}
           </div>
+
 
           <div className="min-w-0 flex-1 text-left">
             <p className="text-sm font-medium text-white">
-              Ruba
+              {profileLoading ? "Loading..." : nameToDisplay}
             </p>
 
-            <p className="text-xs font-medium text-violet-200">
-              Upgrade to Premium Plan
-            </p>
+            <p className="text-xs font-medium text-violet-200">&nbsp;</p>
+
+
+
           </div>
+
+
+
 
           <motion.div
             animate={{ rotate: isProfileMenuOpen ? 180 : 0 }}
