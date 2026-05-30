@@ -259,6 +259,91 @@ Passionate about:
 
 This project is developed for educational and internship purposes.
 
+# 🌐 Live Demo
+
+### Deployed Application
+
+🔗 Live Website: https://learn-os-intern.vercel.app/
+
+### GitHub Repository
+
+🔗 Repository: https://github.com/Ruba2911/LearnOS-intern
+
 ---
 
-⭐ If you like this project, consider giving it a star on GitHub!
+# 🧪 Demo Account (For Evaluation)
+
+To explore the dashboard with preloaded learning progress, achievements, and analytics, use the following demo account:
+
+### Email
+
+```text
+rubadevi2911@gmail.com
+```
+
+### Password
+
+```text
+ruba123
+```
+
+### Demo Features Available
+
+After logging in with the demo account, reviewers can view:
+
+* 📚 Enrolled Courses
+* 📈 Learning Analytics
+* 🏆 Achievements Dashboard
+* 📅 Calendar Interface
+* 📊 Progress Tracking
+* 🔥 Activity Statistics
+* 🎯 Personalized Learning Data
+
+---
+
+# 👤 New User Experience
+
+New users can create their own account using the Sign Up page.
+
+Since this version focuses on authentication, dashboard analytics, and Supabase integration, newly registered users may initially see limited statistics until learning records are added.
+
+---
+
+# 🚀 Future Enhancements
+
+* Course Enrollment System
+* Personalized Learning Recommendations
+* Real-Time Achievement Unlocking
+* AI Learning Assistant
+* Advanced Analytics Dashboard
+* Learning Streak Tracking
+* Multi-User Collaboration Features
+
+---
+
+# 🛠️ Built With
+
+* Next.js 14
+* TypeScript
+* Tailwind CSS
+* Framer Motion
+* Supabase
+* PostgreSQL
+* Vercel
+
+---
+
+# 📌 Project Status
+
+✅ Authentication Implemented
+
+✅ Supabase Integration Completed
+
+✅ Dashboard Analytics Implemented
+
+✅ Responsive UI Completed
+
+✅ Production Deployment Completed
+
+✅ Internship Project Ready
+
